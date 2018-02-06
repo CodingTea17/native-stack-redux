@@ -5,18 +5,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/';
 
 class ListItem extends Component {
-  renderDescription() {
-    const { library, selectedLibraryId } = this.props;
-
-    if (library.id === selectedLibraryId) {
-      return (
-        <Text>{library.description}</Text>
-      );
-    }
-  }
-
   render() {
-    const { id, title } = this.props.library;
+    const { id, title, description } = this.props.library;
 
     return (
       <TouchableWithoutFeedback
@@ -28,7 +18,7 @@ class ListItem extends Component {
               {title}
             </Text>
           </CardSection>
-          {this.renderDescription()}
+          { this.props.expanded && <Text>{description}</Text> }
         </View>
       </TouchableWithoutFeedback>
     );
@@ -42,8 +32,8 @@ const styles = {
   }
 }
 
-const mapStateToProps = state => {
-  return { selectedLibraryId: state.selectedLibraryId}
+const mapStateToProps = (state, ownProps) => {
+  return { expanded: state.selectedLibraryId === ownProps.library.id }
 };
 
 export default connect(mapStateToProps, actions)(ListItem);
